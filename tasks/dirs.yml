@@ -1,0 +1,46 @@
+---
+- name: Create base dir
+  ansible.builtin.file:
+    path: "{{ goaccess_docker_base_dir }}"
+    mode: "{{ goaccess_docker_default_dir_mode }}"
+    state: directory
+
+- name: Create service dir
+  ansible.builtin.file:
+    path: "{{ goaccess_docker_base_dir }}/goaccess"
+    mode: "{{ goaccess_docker_default_dir_mode }}"
+    state: directory
+
+- name: Create goaccess config dir
+  ansible.builtin.file:
+    path: "{{ goaccess_docker_base_dir }}/goaccess/conf/goaccess"
+    mode: "{{ goaccess_docker_default_dir_mode }}"
+    state: directory
+
+- name: Create nginx config dir
+  ansible.builtin.file:
+    path: "{{ goaccess_docker_base_dir }}/goaccess/conf/nginx"
+    mode: "{{ goaccess_docker_default_dir_mode }}"
+    state: directory
+  when: goaccess_docker_nginx_deploy
+
+- name: Create data dir
+  ansible.builtin.file:
+    path: "{{ goaccess_docker_data_dir }}"
+    mode: "{{ goaccess_docker_default_dir_mode }}"
+    owner: "{{ goaccess_docker_uid }}"
+    state: directory
+
+- name: Create db dir
+  ansible.builtin.file:
+    path: "{{ goaccess_docker_db_dir }}"
+    mode: "{{ goaccess_docker_default_dir_mode }}"
+    owner: "{{ goaccess_docker_uid }}"
+    state: directory
+
+- name: Create report dir
+  ansible.builtin.file:
+    path: "{{ goaccess_docker_report_dir }}"
+    mode: "{{ goaccess_docker_default_dir_mode }}"
+    owner: "{{ goaccess_docker_uid }}"
+    state: directory

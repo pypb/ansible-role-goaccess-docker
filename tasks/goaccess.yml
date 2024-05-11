@@ -1,0 +1,38 @@
+---
+- name: Template .env
+  ansible.builtin.template:
+    src: "env.j2"
+    mode: "{{ goaccess_docker_docker_file_mode }}"
+    dest: "{{ goaccess_docker_base_dir }}/goaccess/.env"
+
+- name: Template docker-compose.yml
+  ansible.builtin.template:
+    src: "docker-compose.yml.j2"
+    mode: "{{ goaccess_docker_docker_file_mode }}"
+    dest: "{{ goaccess_docker_base_dir }}/goaccess/docker-compose.yml"
+
+- name: Template goaccess.conf
+  ansible.builtin.template:
+    src: "goaccess.conf.j2"
+    mode: "{{ goaccess_docker_default_file_mode }}"
+    dest: "{{ goaccess_docker_base_dir }}/goaccess/conf/goaccess/goaccess.conf"
+
+- name: Template default.conf
+  ansible.builtin.template:
+    src: "default.conf.j2"
+    mode: "{{ goaccess_docker_default_file_mode }}"
+    dest: "{{ goaccess_docker_base_dir }}/goaccess/conf/nginx/default.conf"
+  when: goaccess_docker_nginx_deploy
+
+- name: Pulling image
+  community.docker.docker_compose_v2_pull:
+    project_name: "{{ goaccess_docker_docker_compose_project_prefix }}_goaccess"
+    project_src: "{{ goaccess_docker_base_dir }}/goaccess"
+
+- name: Start nginx
+  community.docker.docker_compose_v2:
+    project_name: "{{ goaccess_docker_docker_compose_project_prefix }}_goaccess"
+    project_src: "{{ goaccess_docker_base_dir }}/goaccess"
+    services: nginx
+    state: present
+  when: goaccess_docker_nginx_deploy

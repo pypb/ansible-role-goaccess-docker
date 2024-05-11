@@ -1,0 +1,32 @@
+---
+- name: Verify accesslog variables
+  ansible.builtin.assert:
+    that:
+      - goaccess_docker_accesslog_dir != ''
+      - goaccess_docker_accesslog_filename != ''
+    fail_msg: Please set goaccess_docker_accesslog_dir and goaccess_docker_accesslog_filename
+  when: goaccess_docker_deploy
+
+- name: Create directories
+  ansible.builtin.include_tasks:
+    file: dirs.yml
+    apply:
+      tags: dirs
+  tags: always
+  when: goaccess_docker_deploy
+
+- name: Deploy service GoAccess
+  ansible.builtin.include_tasks:
+    file: goaccess.yml
+    apply:
+      tags: goaccess
+  tags: always
+  when: goaccess_docker_deploy
+
+- name: Schedule GoAccess run
+  ansible.builtin.include_tasks:
+    file: cron.yml
+    apply:
+      tags: cron
+  tags: always
+  when: goaccess_docker_deploy

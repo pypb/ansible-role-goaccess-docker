@@ -1,0 +1,138 @@
+---
+goaccess_docker_deploy: false
+
+goaccess_docker_image_tag: 1.9
+goaccess_docker_uid: 11337
+goaccess_docker_gid: 11337
+
+# the components will live in subdirectories under here
+goaccess_docker_base_dir: "/srv/goaccess/{{ goaccess_docker_docker_compose_project_prefix }}"
+goaccess_docker_data_dir: "{{ goaccess_docker_base_dir }}/data"
+goaccess_docker_db_dir: "{{ goaccess_docker_data_dir }}/db"
+goaccess_docker_report_dir: "{{ goaccess_docker_data_dir }}/report"
+
+goaccess_docker_report_filename: report.html
+
+# set these to where your accesslog is
+goaccess_docker_accesslog_dir: ''
+goaccess_docker_accesslog_filename: ''
+
+# mode to use on created files and dirs.
+# please note that most containers run as non-root with different uid's
+goaccess_docker_default_dir_mode: '2775'
+goaccess_docker_default_file_mode: '0664'
+goaccess_docker_docker_file_mode: '0660'
+
+# set a prefix on the docker compose project names
+# useful if you want to separate dev/test/prod with different names
+goaccess_docker_docker_compose_project_prefix: "prod"
+
+# timezone will mostly affect timestamp on container log output
+goaccess_docker_timezone: UTC
+
+# cron
+goaccess_docker_cron_enable: false
+goaccess_docker_cron_hour: '*'
+goaccess_docker_cron_minute: 05
+goaccess_docker_cron_user: root
+
+goaccess_docker_config_log_file: "/accesslog/{{ goaccess_docker_accesslog_filename }}"
+goaccess_docker_config_date_format: '%Y-%m-%d'
+goaccess_docker_config_log_format: VCOMMON
+goaccess_docker_config_time_format: '%H:%M:%S'
+goaccess_docker_config_html_report_title: GoAccess Report
+goaccess_docker_config_keep_last: 365
+goaccess_docker_config_with_output_resolver: 'true'
+goaccess_docker_config_http_method: 'yes'
+goaccess_docker_config_http_protocol: 'no'
+goaccess_docker_config_no_query_string: 'true'
+goaccess_docker_config_ignore_crawlers: 'false'
+goaccess_docker_config_unknowns_as_crawlers: 'true'
+goaccess_docker_config_real_os: 'true'
+
+goaccess_docker_config_enable_panels:
+  - VISITORS
+  - REQUESTS
+  - REQUESTS_STATIC
+  - NOT_FOUND
+  - HOSTS
+  - OS
+  - BROWSERS
+  - VISIT_TIMES
+  - VIRTUAL_HOSTS
+  - REFERRERS
+  - REFERRING_SITES
+  - KEYPHRASES
+  - STATUS_CODES
+  - GEO_LOCATION
+  - MIME_TYPE
+
+goaccess_docker_config_hide_referrers: []
+
+goaccess_docker_config_ignore_panels: []
+
+goaccess_docker_config_static_files:
+  - .css
+  - .js
+  - .jpg
+  - .png
+  - .gif
+  - .ico
+  - .jpeg
+  - .pdf
+  - .csv
+  - .mpeg
+  - .mpg
+  - .swf
+  - .woff
+  - .woff2
+  - .xls
+  - .xlsx
+  - .doc
+  - .docx
+  - .ppt
+  - .pptx
+  - .txt
+  - .zip
+  - .ogg
+  - .mp3
+  - .mp4
+  - .exe
+  - .iso
+  - .gz
+  - .rar
+  - .svg
+  - .bmp
+  - .tar
+  - .tgz
+  - .tiff
+  - .tif
+  - .ttf
+  - .flv
+  - .dmg
+  - .xz
+  - .zst
+
+goaccess_docker_config_extra: {}
+
+goaccess_docker_nginx_deploy: false
+goaccess_docker_nginx_image_tag: 1.25
+
+# labels example with traefik reverse-proxy
+goaccess_docker_nginx_labels:
+  - "traefik.enable=false"
+  - "traefik.http.routers.goaccess.rule=Host(`www.mydomain.local`) && PathPrefix(`/goaccess`)"
+  - "traefik.http.routers.goaccess.service=goaccess"
+  - "traefik.http.routers.goaccess.tls=true"
+  - "traefik.http.routers.goaccess.tls.certresolver=letsencrypt"
+  - "traefik.http.services.goaccess.loadbalancer.server.port=8080"
+  - "traefik.docker.network={{ goaccess_docker_nginx_network_name }}"
+
+# if using with a reverse-proxy, set this to a docker network reachable by the proxy
+goaccess_docker_nginx_network_name: "default"
+
+# exposed ports
+goaccess_docker_nginx_ports: []
+
+# if enabled, you need to provide a goaccess.htpasswd file in the conf/nginx-directory
+goaccess_docker_nginx_auth_basic_enable: false

@@ -1,0 +1,45 @@
+# persistance
+db-path /data/db
+persist true
+restore true
+keep-last {{ goaccess_docker_config_keep_last }}
+
+# access log
+date-format {{ goaccess_docker_config_date_format }}
+time-format {{ goaccess_docker_config_time_format }}
+log-format {{ goaccess_docker_config_log_format }}
+
+# output config
+output /data/report/{{ goaccess_docker_report_filename }}
+html-report-title {{ goaccess_docker_config_html_report_title }}
+tz {{ goaccess_docker_timezone }}
+
+no-progress true
+
+http-method {{ goaccess_docker_config_http_method }}
+http-protocol {{ goaccess_docker_config_http_protocol }}
+with-output-resolver {{ goaccess_docker_config_with_output_resolver }}
+no-query-string {{ goaccess_docker_config_no_query_string }}
+ignore-crawlers {{ goaccess_docker_config_ignore_crawlers }}
+unknowns-as-crawlers {{ goaccess_docker_config_unknowns_as_crawlers }}
+real-os {{ goaccess_docker_config_real_os }}
+
+{% for item in goaccess_docker_config_enable_panels %}
+enable-panel {{ item }}
+{% endfor %}
+
+{% for item in goaccess_docker_config_hide_referrers %}
+hide-referrer {{ item }}
+{% endfor %}
+
+{% for item in goaccess_docker_config_ignore_panels %}
+ignore-panel {{ item }}
+{% endfor %}
+
+{% for item in goaccess_docker_config_static_files %}
+static-file {{ item }}
+{% endfor %}
+
+{% for key, value in goaccess_docker_config_extra.items() %}
+{{ key }} {{ value }}
+{% endfor %}

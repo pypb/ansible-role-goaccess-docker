@@ -1,0 +1,10 @@
+---
+- name: Scheduling GoAccess in cron
+  ansible.builtin.cron:
+    name: goaccess_docker
+    minute: "{{ goaccess_docker_cron_minute }}"
+    hour: "{{ goaccess_docker_cron_hour }}"
+    user: "{{ goaccess_docker_cron_user }}"
+    job: "docker compose --project-directory {{ goaccess_docker_base_dir }}/goaccess --project-name {{ goaccess_docker_docker_compose_project_prefix }}_goaccess run --rm goaccess"
+    cron_file: goaccess_docker
+  when: goaccess_docker_cron_enable

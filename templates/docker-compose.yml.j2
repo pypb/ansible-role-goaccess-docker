@@ -1,0 +1,38 @@
+---
+services:
+  goaccess:
+    image: allinurl/goaccess:${GOACCESS_TAG}
+    restart: 'no'
+    user: "${GOACCESS_UID}:${GOACCESS_GID}"
+    command: /accesslog/{{ goaccess_docker_accesslog_filename }}
+    environment:
+      TZ: ${TZ}
+    volumes:
+      - ./conf/goaccess:/etc/goaccess:ro
+      - ${GOACCESS_DB_DIR}:/data/db
+      - ${GOACCESS_REPORT_DIR}:/data/report
+      - ${GOACCESS_ACCESSLOG_DIR}:/accesslog:ro
+
+{% if goaccess_docker_nginx_deploy %}
+  nginx:
+    image: nginxinc/nginx-unprivileged:${NGINX_TAG}
+    restart: unless-stopped
+    environment:
+      TZ: ${TZ}
+    networks:
+      - {{ goaccess_docker_nginx_network_name }}
+    volumes:
+      - ./conf/nginx:/etc/nginx/conf.d:ro
+      - ${GOACCESS_REPORT_DIR}:/usr/share/nginx/html:ro
+
+    labels: {{ goaccess_docker_nginx_labels|tojson }}
+    ports: {{ goaccess_docker_nginx_ports|tojson }}
+
+{% if goaccess_docker_nginx_network_name != 'default' %}
+networks:
+  {{ goaccess_docker_nginx_network_name }}:
+    external: true
+    name: {{ goaccess_docker_nginx_network_name }}
+{% endif %}
+
+{% endif %}
