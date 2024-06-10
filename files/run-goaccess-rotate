@@ -1,0 +1,27 @@
+#!/bin/sh
+# {{ ansible_managed }}
+#
+# This script is especially useful if you want to do rapid log rotation
+# in combination with GoAccess analysis, throwing away the log after GoAccess
+# has finished.
+#
+# Tip: write the access log to tmpfs and rotate very often
+#
+
+if [ -z ${GOACCESS_BASE_DIR+x} ]; then
+  echo "GOACCESS_BASE_DIR is unset, please source .env before running"
+  exit 1
+fi
+
+srclog=${GOACCESS_ACCESSLOG_DIR}/${GOACCESS_REVPROXY_SRC_FILENAME}
+dstlog=${GOACCESS_ACCESSLOG_DIR}/${GOACCESS_ACCESSLOG_FILENAME}
+
+[ -z "$GOACCESS_REVPROXY_SRC_FILENAME" ] || mv -f $srclog $dstlog
+[ -z "$GOACCESS_REVPROXY_NAME" ] || docker kill --signal="$GOACCESS_REVPROXY_SIGNAL" $GOACCESS_REVPROXY_NAME > /dev/null 2>&1
+
+docker compose \
+  --project-directory ${GOACCESS_BASE_DIR}/goaccess \
+  --project-name $GOACCESS_PROJ_NAME \
+  run --rm goaccess
+
+[ -z "$GOACCESS_REVPROXY_SRC_FILENAME" ] || rm -f $dstlog

@@ -24,6 +24,12 @@
     dest: "{{ goaccess_docker_base_dir }}/goaccess/conf/nginx/default.conf"
   when: goaccess_docker_nginx_deploy
 
+- name: Copy run-goaccess-rotate
+  ansible.builtin.copy:
+    src: run-goaccess-rotate
+    mode: '0755'
+    dest: "{{ goaccess_docker_base_dir }}/goaccess/scripts/run-goaccess-rotate"
+
 - name: Pulling image
   community.docker.docker_compose_v2_pull:
     project_name: "{{ goaccess_docker_docker_compose_project_prefix }}_goaccess"

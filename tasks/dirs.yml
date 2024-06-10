@@ -24,6 +24,12 @@
     state: directory
   when: goaccess_docker_nginx_deploy
 
+- name: Create goaccess script dir
+  ansible.builtin.file:
+    path: "{{ goaccess_docker_base_dir }}/goaccess/scripts"
+    mode: "{{ goaccess_docker_default_dir_mode }}"
+    state: directory
+
 - name: Create data dir
   ansible.builtin.file:
     path: "{{ goaccess_docker_data_dir }}"

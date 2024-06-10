@@ -12,6 +12,7 @@ services:
       - ${GOACCESS_DB_DIR}:/data/db
       - ${GOACCESS_REPORT_DIR}:/data/report
       - ${GOACCESS_ACCESSLOG_DIR}:/accesslog:ro
+    cpu_shares: {{ goaccess_docker_cpu_shares }}
 
 {% if goaccess_docker_nginx_deploy %}
   nginx:

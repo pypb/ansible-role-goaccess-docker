@@ -4,6 +4,7 @@ goaccess_docker_deploy: false
 goaccess_docker_image_tag: 1.9
 goaccess_docker_uid: 11337
 goaccess_docker_gid: 11337
+goaccess_docker_cpu_shares: 256
 
 # the components will live in subdirectories under here
 goaccess_docker_base_dir: "/srv/goaccess/{{ goaccess_docker_docker_compose_project_prefix }}"
@@ -136,3 +137,9 @@ goaccess_docker_nginx_ports: []
 
 # if enabled, you need to provide a goaccess.htpasswd file in the conf/nginx-directory
 goaccess_docker_nginx_auth_basic_enable: false
+
+# set this to the actual name of the reverse-proxy container
+# this is used to send a signal for log rotation
+goaccess_docker_reverse_proxy_container_name: ""
+goaccess_docker_reverse_proxy_rotate_signal: USR1
+goaccess_docker_reverse_proxy_rotate_source_filename: ""
