@@ -1,0 +1,7 @@
+---
+- name: Download geoip2
+  ansible.builtin.get_url:
+    dest: "{{ goaccess_docker_data_dir }}/GeoLite2-City.mmdb"
+    mode: '0664'
+    url: "{{ goaccess_docker_geolite2_city_url }}"
+  when: goaccess_docker_geolite2_city_url != ""

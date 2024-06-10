@@ -114,6 +114,12 @@ goaccess_docker_config_static_files:
   - .xz
   - .zst
 
+goaccess_docker_config_exclude_ip:
+  - 127.0.0.1
+  - 10.0.0.0-10.255.255.255
+  - 172.16.0.0-172.31.255.255
+  - 192.168.0.0-192.168.255.255
+
 goaccess_docker_config_extra: {}
 
 goaccess_docker_nginx_deploy: false
@@ -143,3 +149,6 @@ goaccess_docker_nginx_auth_basic_enable: false
 goaccess_docker_reverse_proxy_container_name: ""
 goaccess_docker_reverse_proxy_rotate_signal: USR1
 goaccess_docker_reverse_proxy_rotate_source_filename: ""
+
+# download GeoLite2-City.mmdb from this url
+goaccess_docker_geolite2_city_url: ""

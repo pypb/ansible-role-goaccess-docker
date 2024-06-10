@@ -5,6 +5,7 @@ services:
     restart: 'no'
     user: "${GOACCESS_UID}:${GOACCESS_GID}"
     command: /accesslog/{{ goaccess_docker_accesslog_filename }}
+    cpu_shares: {{ goaccess_docker_cpu_shares }}
     environment:
       TZ: ${TZ}
     volumes:
@@ -12,7 +13,9 @@ services:
       - ${GOACCESS_DB_DIR}:/data/db
       - ${GOACCESS_REPORT_DIR}:/data/report
       - ${GOACCESS_ACCESSLOG_DIR}:/accesslog:ro
-    cpu_shares: {{ goaccess_docker_cpu_shares }}
+{% if goaccess_docker_geolite2_city_url %}
+      - ${GOACCESS_DATA_DIR}/GeoLite2-City.mmdb:/GeoLite2-City.mmdb:ro
+{% endif %}
 
 {% if goaccess_docker_nginx_deploy %}
   nginx:

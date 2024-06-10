@@ -23,6 +23,14 @@
   tags: always
   when: goaccess_docker_deploy
 
+- name: Setup GeoIP2
+  ansible.builtin.include_tasks:
+    file: geoip.yml
+    apply:
+      tags: goaccess
+  tags: always
+  when: goaccess_docker_deploy
+
 - name: Schedule GoAccess run
   ansible.builtin.include_tasks:
     file: cron.yml

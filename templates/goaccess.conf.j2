@@ -40,6 +40,14 @@ ignore-panel {{ item }}
 static-file {{ item }}
 {% endfor %}
 
+{% for item in goaccess_docker_config_exclude_ip %}
+exclude-ip {{ item }}
+{% endfor %}
+
 {% for key, value in goaccess_docker_config_extra.items() %}
 {{ key }} {{ value }}
 {% endfor %}
+
+{% if goaccess_docker_geolite2_city_url != '' %}
+geoip-database /GeoLite2-City.mmdb
+{% endif %}
