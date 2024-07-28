@@ -38,9 +38,8 @@ goaccess_docker_cron_minute: 05
 goaccess_docker_cron_user: root
 
 goaccess_docker_config_log_file: "/accesslog/{{ goaccess_docker_accesslog_filename }}"
-goaccess_docker_config_date_format: '%Y-%m-%d'
+goaccess_docker_config_datetime_format: '%d/%b/%Y:%H:%M:%s %z'
 goaccess_docker_config_log_format: VCOMMON
-goaccess_docker_config_time_format: '%H:%M:%S'
 goaccess_docker_config_html_report_title: GoAccess Report
 goaccess_docker_config_keep_last: 365
 goaccess_docker_config_with_output_resolver: 'true'
