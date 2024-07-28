@@ -62,7 +62,6 @@ goaccess_docker_config_enable_panels:
   - VIRTUAL_HOSTS
   - REFERRERS
   - REFERRING_SITES
-  - KEYPHRASES
   - STATUS_CODES
   - GEO_LOCATION
   - MIME_TYPE
