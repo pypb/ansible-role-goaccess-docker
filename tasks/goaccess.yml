@@ -25,8 +25,8 @@
   when: goaccess_docker_nginx_deploy
 
 - name: Copy run-goaccess-rotate
-  ansible.builtin.copy:
-    src: run-goaccess-rotate
+  ansible.builtin.template:
+    src: run-goaccess-rotate.j2
     mode: '0755'
     dest: "{{ goaccess_docker_base_dir }}/goaccess/scripts/run-goaccess-rotate"
 

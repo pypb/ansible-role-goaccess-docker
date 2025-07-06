@@ -18,6 +18,9 @@ goaccess_docker_report_filename: report.html
 goaccess_docker_accesslog_dir: ''
 goaccess_docker_accesslog_filename: ''
 
+# preprocess the accesslog
+goaccess_docker_preprocess_command: cat $dstlog
+
 # mode to use on created files and dirs.
 # please note that most containers run as non-root with different uid's
 goaccess_docker_default_dir_mode: '2775'
